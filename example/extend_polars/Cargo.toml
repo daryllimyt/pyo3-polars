@@ -11,6 +11,7 @@ crate-type = ["cdylib"]
 [dependencies]
 pyo3 = { version = "0.17.3", features = ["extension-module"] }
 pyo3-polars = {version = "*", path = "../../pyo3-polars"}
-polars-core = {version = "*"}
+polars-core = {version = "*", features=["ndarray"]}
 polars = {version = "*", features=["fmt"]}
 rayon = "0.9"
+ndarray = "0.15.6"

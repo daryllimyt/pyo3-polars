@@ -1,4 +1,5 @@
 mod parallel_jaccard_mod;
+mod test_mod;
 
 use pyo3::prelude::*;
 use pyo3_polars::{
@@ -7,6 +8,12 @@ use pyo3_polars::{
 use pyo3_polars::error::PyPolarsErr;
 use polars::prelude::*;
 
+#[pyfunction]
+fn unit(pydf: PyDataFrame) -> PyResult<PyDataFrame> {
+    let df: DataFrame = pydf.into();
+    let df = test_mod::unit(df).map_err(PyPolarsErr::from)?;
+    Ok(PyDataFrame(df))
+}
 
 #[pyfunction]
 fn parallel_jaccard(pydf: PyDataFrame, col_a: &str, col_b: &str) -> PyResult<PyDataFrame> {
@@ -19,5 +26,6 @@ fn parallel_jaccard(pydf: PyDataFrame, col_a: &str, col_b: &str) -> PyResult<PyD
 #[pymodule]
 fn extend_polars(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(parallel_jaccard, m)?)?;
+    m.add_function(wrap_pyfunction!(unit, m)?)?;
     Ok(())
 }
